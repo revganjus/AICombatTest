@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AICombatTest/AICombatTestTypes.h"
 #include "GameFramework/Character.h"
 #include "Logging/LogMacros.h"
 #include "AICombatTestCharacter.generated.h"
@@ -11,6 +12,8 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputMappingContext;
 class UInputAction;
+class UCharacterDataAsset;
+class UCharacterAnimDataAsset;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
@@ -44,9 +47,20 @@ class AAICombatTestCharacter : public ACharacter
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
 
+	UPROPERTY(EditDefaultsOnly)
+	TObjectPtr<UCharacterDataAsset> CharacterDataAsset;
+
+	UPROPERTY()
+	FCharacterData CharacterData;
+
+	UPROPERTY(EditAnywhere, Category = "Animation")
+	UCharacterAnimDataAsset* DefaultCharacterAnimDataAsset = nullptr;
+
 public:
 	AAICombatTestCharacter();
 	
+	UFUNCTION(BlueprintPure)
+	UCharacterAnimDataAsset* GetCharacterAnimDataAsset() const;
 
 protected:
 
@@ -63,6 +77,8 @@ protected:
 	
 	// To add mapping context
 	virtual void BeginPlay();
+
+	virtual void PostInitializeComponents() override;
 
 public:
 	/** Returns CameraBoom subobject **/

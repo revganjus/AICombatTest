@@ -9,6 +9,7 @@
 #include "GameFramework/Controller.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "AICombatTest/DataAssets/CharacterDataAsset.h"
 #include "InputActionValue.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
@@ -54,6 +55,11 @@ AAICombatTestCharacter::AAICombatTestCharacter()
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
 }
 
+UCharacterAnimDataAsset* AAICombatTestCharacter::GetCharacterAnimDataAsset() const
+{
+	return CharacterData.CharacterAnimDataAsset ? CharacterData.CharacterAnimDataAsset : DefaultCharacterAnimDataAsset;
+}
+
 void AAICombatTestCharacter::BeginPlay()
 {
 	// Call the base class  
@@ -66,6 +72,16 @@ void AAICombatTestCharacter::BeginPlay()
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
 		}
+	}
+}
+
+void AAICombatTestCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+
+	if (IsValid(CharacterDataAsset))
+	{
+		CharacterData = CharacterDataAsset->CharacterData;
 	}
 }
 

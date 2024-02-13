@@ -1,7 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "AICombatTestGameMode.h"
-#include "AICombatTestCharacter.h"
+#include "AICombatTest/Character/AICombatTestCharacter.h"
 #include "UObject/ConstructorHelpers.h"
 
 AAICombatTestGameMode::AAICombatTestGameMode()
